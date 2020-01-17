@@ -130,7 +130,7 @@ public class FormattedTextField extends TextField {
         this.type.setPattern(patternBuilder.toString());
         this.locale        = locale;
         this.numberFormat  = type.getDecimalFormatForLocale(this.locale);
-        this.decimalFormat = new DecimalFormat(this.type.pattern + "'" + this.type.getUnit() + "'", new DecimalFormatSymbols(this.locale));
+        this.decimalFormat = new DecimalFormat(this.type.getPattern() + "'" + this.type.getUnit() + "'", new DecimalFormatSymbols(this.locale));
         this.value         = new ObjectPropertyBase<BigDecimal>() {
             @Override protected void invalidated() { setText(decimalFormat.format(get())); }
             @Override public Object getBean() { return FormattedTextField.this; }
@@ -204,7 +204,7 @@ public class FormattedTextField extends TextField {
         this.decimals      = clamp(0, Integer.MAX_VALUE, decimals);
         this.type.setPattern(patternBuilder.toString());
         this.numberFormat  = type.getDecimalFormatForLocale(this.locale);
-        this.decimalFormat = new DecimalFormat(this.type.pattern + "'" + this.type.getUnit() + "'", new DecimalFormatSymbols(locale));
+        this.decimalFormat = new DecimalFormat(this.type.getPattern() + "'" + this.type.getUnit() + "'", new DecimalFormatSymbols(locale));
         parseAndFormat();
     }
 
@@ -213,7 +213,7 @@ public class FormattedTextField extends TextField {
     }
     public void setLocale(final Locale locale) {
         this.numberFormat  = type.getDecimalFormatForLocale(this.locale);
-        this.decimalFormat = new DecimalFormat(this.type.pattern + "'" + this.type.getUnit() + "'", new DecimalFormatSymbols(this.locale));
+        this.decimalFormat = new DecimalFormat(this.type.getPattern() + "'" + this.type.getUnit() + "'", new DecimalFormatSymbols(this.locale));
         parseAndFormat();
     }
 }
