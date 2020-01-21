@@ -28,6 +28,7 @@ import javafx.stage.Stage;
 
 import java.math.BigDecimal;
 import java.text.ParsePosition;
+import java.util.Locale;
 import java.util.function.UnaryOperator;
 import java.util.regex.Pattern;
 
@@ -40,7 +41,7 @@ public class Demo extends Application {
 
 
     @Override public void init() {
-        currencyTextField   = new FormattedTextField(Type.CURRENCY, 2);
+        currencyTextField   = new FormattedTextField(Type.CURRENCY, 2, Locale.GERMANY);
         percentageTextField = new FormattedTextField(Type.PERCENTAGE, BigDecimal.valueOf(20), 1);
         yearTextField       = new FormattedTextField(Type.YEARS, "");
         noneTextField       = new FormattedTextField(Type.NONE, "");
@@ -61,6 +62,7 @@ public class Demo extends Application {
         //currencyTextField.setValue(new BigDecimal(500));
 
         percentageTextField.setDecimals(5);
+        yearTextField.setText("0");
     }
 
     @Override public void stop() {

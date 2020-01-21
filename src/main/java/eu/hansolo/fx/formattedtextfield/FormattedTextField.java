@@ -36,20 +36,28 @@ public class FormattedTextField extends TextField {
     public enum Type {
         NONE("#", "", ""),
         PERCENTAGE("0.0", " %", "in Prozent"),
-        YEARS("0", " Jahr(e)", "in Jahren"),
+        YEARS("0", " Jahr", "Jahre", "in Jahren"),
+        MONTHS("0", " Monat", "Monate", "in Monaten"),
         CURRENCY("0.00", " EUR", "in Euro");
 
-        private       String pattern;
-        private final String unit;
-        private final String prompt;
+        private       String        pattern;
+        private final String        unit;
+        private final String        units;
+        private final boolean       hasMultipleUnits;
+        private final String        prompt;
         private       DecimalFormat decimalFormat;
 
 
-        Type(final String pattern, final String unit, String prompt) {
-            this.pattern       = pattern;
-            this.unit          = unit;
-            this.prompt        = prompt;
-            this.decimalFormat = new DecimalFormat(pattern, new DecimalFormatSymbols(Locale.getDefault()));
+        Type(final String pattern, final String unit, final String prompt) {
+            this(pattern, unit, unit, prompt);
+        }
+        Type(final String pattern, final String unit, final String units, final String prompt) {
+            this.pattern          = pattern;
+            this.unit             = unit;
+            this.units            = units;
+            this.hasMultipleUnits = !unit.equals(units);
+            this.prompt           = prompt;
+            this.decimalFormat    = new DecimalFormat(pattern, new DecimalFormatSymbols(Locale.getDefault()));
         }
 
 
@@ -60,8 +68,18 @@ public class FormattedTextField extends TextField {
             this.pattern = pattern;
         }
 
+        // Unit for an amount of 1
         public String getUnit() {
             return unit;
+        }
+
+        // Unit for an amount larger than 1
+        public String getUnits() {
+            return units;
+        }
+
+        public boolean hasMultipleUnits() {
+            return hasMultipleUnits;
         }
 
         public String getPrompt() {
@@ -87,6 +105,7 @@ public class FormattedTextField extends TextField {
     private       NumberFormat               numberFormat;
     private       DecimalFormat              decimalFormat;
     private       Locale                     locale;
+    private       DecimalFormatSymbols       decimalFormatSymbols;
     private       ObjectProperty<BigDecimal> value;
     private       TextFormatter              textFormatter;
     private       Pattern                    pattern;
@@ -129,13 +148,18 @@ public class FormattedTextField extends TextField {
     }
     public FormattedTextField(final Type type, final BigDecimal value, final int decimals, final Locale locale) {
         super();
-        StringBuilder patternBuilder = new StringBuilder(decimals > 0 ? "0." : "0");
-        for (int i = 0 ; i < decimals ; i++) { patternBuilder.append("0"); }
+        this.locale               = locale;
+        this.decimalFormatSymbols = new DecimalFormatSymbols(this.locale);
+        this.decimals             = clamp(0, Integer.MAX_VALUE, decimals);
+
+        StringBuilder patternBuilder = new StringBuilder("0");
+        if (this.decimals > 0) {
+            patternBuilder.append(".");
+            for (int i = 0 ; i < this.decimals ; i++) { patternBuilder.append("0"); }
+        }
 
         this.type          = type;
-        this.decimals      = clamp(0, Integer.MAX_VALUE, decimals);
         this.type.setPattern(patternBuilder.toString());
-        this.locale        = locale;
         this.numberFormat  = type.getDecimalFormatForLocale(this.locale);
         this.decimalFormat = new DecimalFormat(this.type.getPattern() + (this.type.getUnit().isEmpty() ? "" : ("'" + this.type.getUnit() + "'")), new DecimalFormatSymbols(this.locale));
         this.value         = new ObjectPropertyBase<BigDecimal>() {
@@ -143,7 +167,12 @@ public class FormattedTextField extends TextField {
             @Override public Object getBean() { return FormattedTextField.this; }
             @Override public String getName() { return "FormattedTextField"; }
         };
-        this.pattern       = Pattern.compile("\\d*|\\d+\\,\\d{0," + decimals + "}");
+        //this.pattern       = Pattern.compile("\\d*|\\d+\\,\\d{0," + decimals + "}");
+        if (decimals > 0) {
+            this.pattern = Pattern.compile("\\d*|\\d+" + decimalFormatSymbols.getDecimalSeparator() + "\\d{0," + decimals + "}");
+        } else {
+            this.pattern = Pattern.compile("\\d*|\\d+\\d{0," + decimals + "}");
+        }
         this.filter        = c -> {
             String text = c.getControlNewText();
             if (pattern.matcher(text).matches()) {
@@ -165,11 +194,18 @@ public class FormattedTextField extends TextField {
         focusedProperty().addListener((o, ov, nv) -> {
             if (nv) {
                 if (null != value.get()) {
-                    setText(value.get().toString());
+                    if (decimalFormatSymbols.getDecimalSeparator() != '.') {
+                        setText(value.get().toString().replace(".", Character.toString(decimalFormatSymbols.getDecimalSeparator())));
+                    }
                 }
                 setTextFormatter(textFormatter);
             } else {
                 setTextFormatter(null);
+                parseAndFormat();
+            }
+        });
+        textProperty().addListener((o, ov, nv) -> {
+            if (!isFocused() && null != nv && null == getValue() && !getType().getUnit().isEmpty() && !nv.contains(getType().getUnit())) {
                 parseAndFormat();
             }
         });
@@ -183,6 +219,13 @@ public class FormattedTextField extends TextField {
             }
             Number     parsedNumber = numberFormat.parse(text);
             BigDecimal newValue     = new BigDecimal(parsedNumber.toString());
+
+            if (type.hasMultipleUnits() && newValue.compareTo(BigDecimal.ONE) > 0) {
+                this.decimalFormat = new DecimalFormat(this.type.getPattern() + (this.type.getUnits().isEmpty() ? "" : ("' " + this.type.getUnits() + "'")), decimalFormatSymbols);
+            } else {
+                this.decimalFormat = new DecimalFormat(this.type.getPattern() + (this.type.getUnit().isEmpty() ? "" : ("' " + this.type.getUnit() + "'")), decimalFormatSymbols);
+            }
+
             setValue(newValue);
             selectAll();
         } catch (ParseException e) {
@@ -218,13 +261,22 @@ public class FormattedTextField extends TextField {
         return decimals;
     }
     public void setDecimals(final int decimals) {
-        StringBuilder patternBuilder = new StringBuilder(decimals > 0 ? "0." : "0");
-        for (int i = 0 ; i < decimals ; i++) { patternBuilder.append("0"); }
-        this.decimals      = clamp(0, Integer.MAX_VALUE, decimals);
+        this.decimals = clamp(0, Integer.MAX_VALUE, decimals);
+        StringBuilder patternBuilder = new StringBuilder("0");
+        if (decimals > 0) {
+            patternBuilder.append(".");
+            for (int i = 0 ; i < decimals ; i++) { patternBuilder.append("0"); }
+        }
         this.type.setPattern(patternBuilder.toString());
         this.numberFormat  = type.getDecimalFormatForLocale(this.locale);
-        this.decimalFormat = new DecimalFormat(this.type.getPattern() + (this.type.getUnit().isEmpty() ? "" : ("' " + this.type.getUnit() + "'")), new DecimalFormatSymbols(this.locale));
-        this.pattern       = Pattern.compile("\\d*|\\d+\\,\\d{0," + decimals + "}");
+        this.decimalFormat = new DecimalFormat(this.type.getPattern() + (this.type.getUnit().isEmpty() ? "" : ("' " + this.type.getUnit() + "'")), decimalFormatSymbols);
+
+        if (decimals > 0) {
+            this.pattern = Pattern.compile("\\d*|\\d+" + decimalFormatSymbols.getDecimalSeparator() + "\\d{0," + decimals + "}");
+        } else {
+            this.pattern = Pattern.compile("\\d*|\\d+\\d{0," + decimals + "}");
+        }
+
         this.filter        = c -> {
             String text = c.getControlNewText();
             if (pattern.matcher(text).matches()) {
@@ -241,8 +293,10 @@ public class FormattedTextField extends TextField {
         return locale;
     }
     public void setLocale(final Locale locale) {
-        this.numberFormat  = type.getDecimalFormatForLocale(this.locale);
-        this.decimalFormat = new DecimalFormat(this.type.getPattern() + "'" + this.type.getUnit() + "'", new DecimalFormatSymbols(this.locale));
+        this.locale               = locale;
+        this.decimalFormatSymbols = new DecimalFormatSymbols(this.locale);
+        this.numberFormat         = type.getDecimalFormatForLocale(this.locale);
+        this.decimalFormat        = new DecimalFormat(this.type.getPattern() + "'" + this.type.getUnit() + "'", decimalFormatSymbols);
         parseAndFormat();
     }
 }
