@@ -20,35 +20,33 @@ import eu.hansolo.fx.formattedtextfield.FormattedTextField.Type;
 import javafx.application.Application;
 import javafx.geometry.Insets;
 import javafx.scene.Scene;
-import javafx.scene.control.TextFormatter;
-import javafx.scene.control.TextFormatter.Change;
 import javafx.scene.layout.StackPane;
 import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
 
 import java.math.BigDecimal;
-import java.text.ParsePosition;
+import java.text.ParseException;
 import java.util.Locale;
-import java.util.function.UnaryOperator;
-import java.util.regex.Pattern;
 
 
 public class Demo extends Application {
     private FormattedTextField currencyTextField;
     private FormattedTextField percentageTextField;
+    private FormattedTextField monthTextField;
     private FormattedTextField yearTextField;
     private FormattedTextField noneTextField;
 
 
-    @Override public void init() {
+    @Override public void init() throws ParseException {
         currencyTextField   = new FormattedTextField(Type.CURRENCY, 2, Locale.GERMANY);
         percentageTextField = new FormattedTextField(Type.PERCENTAGE, BigDecimal.valueOf(20), 1);
-        yearTextField       = new FormattedTextField(Type.YEARS, "");
-        noneTextField       = new FormattedTextField(Type.NONE, "");
+        monthTextField      = new FormattedTextField(Type.MONTHS, "3");
+        yearTextField       = new FormattedTextField(Type.YEARS, "-5");
+        noneTextField       = new FormattedTextField(Type.NONE, null);
     }
 
     @Override public void start(Stage stage) {
-        VBox fieldBox = new VBox(10, currencyTextField, percentageTextField, yearTextField, noneTextField);
+        VBox fieldBox = new VBox(10, currencyTextField, percentageTextField, monthTextField, yearTextField, noneTextField);
 
         StackPane pane = new StackPane(fieldBox);
         pane.setPadding(new Insets(10));

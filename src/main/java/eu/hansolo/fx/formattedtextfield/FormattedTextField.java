@@ -138,16 +138,19 @@ public class FormattedTextField extends TextField {
         this(type, BigDecimal.valueOf(value), 0, locale);
     }
     public FormattedTextField(final Type type, final String value) {
-        this(type, null, 0, Locale.getDefault());
+        this(type, (null == value || value.isEmpty()) ? null: new BigDecimal(value), 0, Locale.getDefault());
     }
     public FormattedTextField(final Type type, final String value, final Locale locale) {
-        this(type, null, 0, locale);
+        this(type, (null == value || value.isEmpty()) ? null: new BigDecimal(value), 0, locale);
     }
     public FormattedTextField(final Type type, final BigDecimal value, final int decimals) {
         this(type, value, decimals, Locale.getDefault());
     }
     public FormattedTextField(final Type type, final BigDecimal value, final int decimals, final Locale locale) {
-        super();
+        super(null == value ? "" : ( value.compareTo(BigDecimal.ZERO) < 0 ? BigDecimal.ZERO.toString() :
+                                                                            DecimalFormatSymbols.getInstance(locale).getDecimalSeparator() != '.' ? value.toString().replace(".", Character.toString(DecimalFormatSymbols.getInstance(locale).getDecimalSeparator())) :
+                                                                            value.toString()));
+
         this.locale               = locale;
         this.decimalFormatSymbols = new DecimalFormatSymbols(this.locale);
         this.decimals             = clamp(0, Integer.MAX_VALUE, decimals);
@@ -162,19 +165,26 @@ public class FormattedTextField extends TextField {
         this.type.setPattern(patternBuilder.toString());
         this.numberFormat  = type.getDecimalFormatForLocale(this.locale);
         this.value         = new ObjectPropertyBase<>() {
-            @Override protected void invalidated() { setText(decimalFormat.format(get())); }
+            @Override protected void invalidated() {
+                if (get().compareTo(BigDecimal.ZERO) < 0) {
+                    set(BigDecimal.ZERO);
+                    setText(decimalFormat.format(BigDecimal.ZERO));
+                } else {
+                    setText(decimalFormat.format(get()));
+                }
+            }
             @Override public Object getBean() { return FormattedTextField.this; }
             @Override public String getName() { return "FormattedTextField"; }
         };
 
-        if (null != value) {
+        if (null == value) {
+            this.decimalFormat = new DecimalFormat(this.type.getPattern() + (this.type.getUnit().isEmpty() ? "" : ("'" + this.type.getUnit() + "'")), decimalFormatSymbols);
+        } else {
             if (type.hasMultipleUnits() && value.compareTo(BigDecimal.ONE) > 0) {
                 this.decimalFormat = new DecimalFormat(this.type.getPattern() + (this.type.getUnits().isEmpty() ? "" : ("' " + this.type.getUnits() + "'")), decimalFormatSymbols);
             } else {
                 this.decimalFormat = new DecimalFormat(this.type.getPattern() + (this.type.getUnit().isEmpty() ? "" : ("' " + this.type.getUnit() + "'")), decimalFormatSymbols);
             }
-        } else {
-            this.decimalFormat = new DecimalFormat(this.type.getPattern() + (this.type.getUnit().isEmpty() ? "" : ("'" + this.type.getUnit() + "'")), new DecimalFormatSymbols(this.locale));
         }
 
         //this.pattern       = Pattern.compile("\\d*|\\d+\\,\\d{0," + decimals + "}");
@@ -200,7 +210,6 @@ public class FormattedTextField extends TextField {
 
     // ******************** Private Methods ***********************************
     private void registerListeners() {
-        setOnAction(e -> parseAndFormat());
         focusedProperty().addListener((o, ov, nv) -> {
             if (nv) {
                 if (null != value.get()) {
@@ -215,13 +224,25 @@ public class FormattedTextField extends TextField {
             }
         });
         textProperty().addListener((o, ov, nv) -> {
-            if (!isFocused() && null != nv && null == getValue() && !getType().getUnit().isEmpty() && !nv.contains(getType().getUnit())) {
-                parseAndFormat();
+            if (!isFocused()) {
+                if (null != nv && !getType().getUnit().isEmpty()) {
+                    if (!nv.contains(getType().getUnit())) {
+                        parseAndFormat();
+                    }
+                }
             }
         });
     }
 
-    private void parseAndFormat() {
+    private int clamp(final int min, final int max, final int value) {
+        if (value < min) { return min; }
+        if (value > max) { return max; }
+        return value;
+    }
+
+
+    // ******************** Public Methods ************************************
+    public final void parseAndFormat() {
         try {
             String text = getText();
             if (text == null || text.length() == 0) {
@@ -247,15 +268,17 @@ public class FormattedTextField extends TextField {
         }
     }
 
-    private int clamp(final int min, final int max, final int value) {
-        if (value < min) { return min; }
-        if (value > max) { return max; }
-        return value;
-    }
-
-
-    // ******************** Public Methods ************************************
     public Type getType() { return type; }
+
+    public String getValueAsText() {
+        if (null == value.get()) {
+            return null;
+        } else if (decimalFormatSymbols.getDecimalSeparator() != '.') {
+            return value.get().toString().replace(".", Character.toString(decimalFormatSymbols.getDecimalSeparator()));
+        } else {
+            return value.get().toString();
+        }
+    }
 
     public BigDecimal getValue() {
         return this.value.get();
@@ -305,5 +328,9 @@ public class FormattedTextField extends TextField {
         this.decimalFormatSymbols = new DecimalFormatSymbols(this.locale);
         this.numberFormat         = type.getDecimalFormatForLocale(this.locale);
         parseAndFormat();
+    }
+
+    public DecimalFormatSymbols getDecimalFormatSymbols() {
+        return decimalFormatSymbols;
     }
 }
