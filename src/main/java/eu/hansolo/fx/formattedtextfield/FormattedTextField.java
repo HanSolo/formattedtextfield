@@ -269,8 +269,6 @@ public class FormattedTextField extends TextField {
         }
         this.type.setPattern(patternBuilder.toString());
         this.numberFormat  = type.getDecimalFormatForLocale(this.locale);
-        this.decimalFormat = new DecimalFormat(this.type.getPattern() + (this.type.getUnit().isEmpty() ? "" : ("' " + this.type.getUnit() + "'")), decimalFormatSymbols);
-
         if (decimals > 0) {
             this.pattern = Pattern.compile("\\d*|\\d+" + decimalFormatSymbols.getDecimalSeparator() + "\\d{0," + decimals + "}");
         } else {
@@ -296,7 +294,6 @@ public class FormattedTextField extends TextField {
         this.locale               = locale;
         this.decimalFormatSymbols = new DecimalFormatSymbols(this.locale);
         this.numberFormat         = type.getDecimalFormatForLocale(this.locale);
-        this.decimalFormat        = new DecimalFormat(this.type.getPattern() + "'" + this.type.getUnit() + "'", decimalFormatSymbols);
         parseAndFormat();
     }
 }
