@@ -16,33 +16,38 @@
 
 package eu.hansolo.fx.formattedtextfield;
 
+import eu.hansolo.fx.formattedtextfield.FormattedTextField.Type;
 import javafx.application.Application;
 import javafx.geometry.Insets;
 import javafx.scene.Scene;
+import javafx.scene.control.TextFormatter;
+import javafx.scene.control.TextFormatter.Change;
 import javafx.scene.layout.StackPane;
 import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
 
 import java.math.BigDecimal;
+import java.text.ParsePosition;
+import java.util.function.UnaryOperator;
+import java.util.regex.Pattern;
 
 
 public class Demo extends Application {
     private FormattedTextField currencyTextField;
     private FormattedTextField percentageTextField;
     private FormattedTextField yearTextField;
+    private FormattedTextField noneTextField;
 
 
     @Override public void init() {
-        currencyTextField   = new FormattedTextField(FormattedTextField.Type.CURRENCY, 2);
-        percentageTextField = new FormattedTextField(FormattedTextField.Type.PERCENTAGE, BigDecimal.valueOf(20), 1);
-        yearTextField       = new FormattedTextField(FormattedTextField.Type.YEARS, "");
-
-        //yearTextField       = FormattedTextFieldBuilder.create(Type.YEARS).promptText("in years").build();
-
+        currencyTextField   = new FormattedTextField(Type.CURRENCY, 2);
+        percentageTextField = new FormattedTextField(Type.PERCENTAGE, BigDecimal.valueOf(20), 1);
+        yearTextField       = new FormattedTextField(Type.YEARS, "");
+        noneTextField       = new FormattedTextField(Type.NONE, "");
     }
 
     @Override public void start(Stage stage) {
-        VBox fieldBox = new VBox(10, currencyTextField, percentageTextField, yearTextField);
+        VBox fieldBox = new VBox(10, currencyTextField, percentageTextField, yearTextField, noneTextField);
 
         StackPane pane = new StackPane(fieldBox);
         pane.setPadding(new Insets(10));
@@ -53,9 +58,9 @@ public class Demo extends Application {
         stage.setScene(scene);
         stage.show();
 
-        currencyTextField.setValue(new BigDecimal(500));
+        //currencyTextField.setValue(new BigDecimal(500));
 
-        //percentageTextField.setDecimals(5);
+        percentageTextField.setDecimals(5);
     }
 
     @Override public void stop() {
