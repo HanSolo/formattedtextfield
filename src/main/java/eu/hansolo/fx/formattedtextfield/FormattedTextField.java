@@ -114,10 +114,10 @@ public class FormattedTextField extends TextField {
 
     // ******************** Constructors **************************************
     public FormattedTextField(final Type type, final int decimals) {
-        this(type, BigDecimal.ZERO, decimals, Locale.getDefault());
+        this(type, null, decimals, Locale.getDefault());
     }
     public FormattedTextField(final Type type, final int decimals, final Locale locale) {
-        this(type, BigDecimal.ZERO, decimals, locale);
+        this(type, null, decimals, locale);
     }
     public FormattedTextField(final Type type, final double value, final int decimals) {
         this(type, BigDecimal.valueOf(value), decimals, Locale.getDefault());
@@ -147,7 +147,7 @@ public class FormattedTextField extends TextField {
         this(type, value, decimals, Locale.getDefault());
     }
     public FormattedTextField(final Type type, final BigDecimal value, final int decimals, final Locale locale) {
-        super(null == value ? "" : ( value.compareTo(BigDecimal.ZERO) < 0 ? BigDecimal.ZERO.toString() :
+        super(null == value ? null : ( value.compareTo(BigDecimal.ZERO) < 0 ? BigDecimal.ZERO.toString() :
                                                                             DecimalFormatSymbols.getInstance(locale).getDecimalSeparator() != '.' ? value.toString().replace(".", Character.toString(DecimalFormatSymbols.getInstance(locale).getDecimalSeparator())) :
                                                                             value.toString()));
 
@@ -245,7 +245,7 @@ public class FormattedTextField extends TextField {
     public final void parseAndFormat() {
         try {
             String text = getText();
-            if (text == null || text.length() == 0) {
+            if (text == null || text.isEmpty()) {
                 return;
             }
             Number     parsedNumber = numberFormat.parse(text);

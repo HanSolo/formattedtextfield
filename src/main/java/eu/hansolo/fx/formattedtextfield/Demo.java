@@ -41,7 +41,7 @@ public class Demo extends Application {
         currencyTextField   = new FormattedTextField(Type.CURRENCY, 2, Locale.GERMANY);
         percentageTextField = new FormattedTextField(Type.PERCENTAGE, BigDecimal.valueOf(20), 1);
         monthTextField      = new FormattedTextField(Type.MONTHS, "3");
-        yearTextField       = new FormattedTextField(Type.YEARS, "-5");
+        yearTextField       = new FormattedTextField(Type.YEARS, 0);
         noneTextField       = new FormattedTextField(Type.NONE, null);
     }
 
@@ -60,7 +60,7 @@ public class Demo extends Application {
         //currencyTextField.setValue(new BigDecimal(500));
 
         percentageTextField.setDecimals(5);
-        yearTextField.setText("0");
+        //yearTextField.setText("0");
     }
 
     @Override public void stop() {
