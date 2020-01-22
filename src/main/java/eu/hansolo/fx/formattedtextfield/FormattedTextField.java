@@ -166,6 +166,7 @@ public class FormattedTextField extends TextField {
         this.numberFormat  = type.getDecimalFormatForLocale(this.locale);
         this.value         = new ObjectPropertyBase<>() {
             @Override protected void invalidated() {
+                if (null == get()) { return; }
                 if (get().compareTo(BigDecimal.ZERO) < 0) {
                     set(BigDecimal.ZERO);
                     setText(decimalFormat.format(BigDecimal.ZERO));
@@ -220,7 +221,11 @@ public class FormattedTextField extends TextField {
                 setTextFormatter(textFormatter);
             } else {
                 setTextFormatter(null);
-                parseAndFormat();
+                if (null == getText() || getText().isEmpty()) {
+                    value.setValue(null);
+                } else {
+                    parseAndFormat();
+                }
             }
         });
         textProperty().addListener((o, ov, nv) -> {
