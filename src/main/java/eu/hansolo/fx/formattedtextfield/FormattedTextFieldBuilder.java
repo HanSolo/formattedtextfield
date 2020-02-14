@@ -16,7 +16,6 @@
 
 package eu.hansolo.fx.formattedtextfield;
 
-import eu.hansolo.fx.formattedtextfield.FormattedTextField.Type;
 import javafx.beans.property.IntegerProperty;
 import javafx.beans.property.ObjectProperty;
 import javafx.beans.property.Property;
@@ -31,18 +30,18 @@ import java.util.Locale;
 
 
 public class FormattedTextFieldBuilder<B extends FormattedTextFieldBuilder<B>> {
-    private final Type                      type;
+    private final StandardType              type;
     private       HashMap<String, Property> properties = new HashMap<>();
 
 
     // ******************** Constructors **************************************
-    protected FormattedTextFieldBuilder(final Type type) {
+    protected FormattedTextFieldBuilder(final StandardType type) {
         this.type = type;
     }
 
 
     // ******************** Methods *******************************************
-    public static final FormattedTextFieldBuilder create(final Type type) {
+    public static final FormattedTextFieldBuilder create(final StandardType type) {
         return new FormattedTextFieldBuilder(type);
     }
 
@@ -84,7 +83,7 @@ public class FormattedTextFieldBuilder<B extends FormattedTextFieldBuilder<B>> {
 
 
     public final FormattedTextField build() {
-        final FormattedTextField formattedTextField = new FormattedTextField(type, 0);
+        final FormattedTextField formattedTextField = new FormattedTextField(new Format(type), 0);
         for (String key : properties.keySet()) {
             if("value".equals(key)) {
                 formattedTextField.setValue(((ObjectProperty<BigDecimal>) properties.get(key)).get());

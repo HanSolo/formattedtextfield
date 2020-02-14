@@ -16,7 +16,6 @@
 
 package eu.hansolo.fx.formattedtextfield;
 
-import eu.hansolo.fx.formattedtextfield.FormattedTextField.Type;
 import javafx.application.Application;
 import javafx.geometry.Insets;
 import javafx.scene.Scene;
@@ -34,19 +33,23 @@ public class Demo extends Application {
     private FormattedTextField percentageTextField;
     private FormattedTextField monthTextField;
     private FormattedTextField yearTextField;
+    private FormattedTextField kmTextField;
     private FormattedTextField noneTextField;
+    private FormattedTextField testTextField;
 
 
     @Override public void init() throws ParseException {
-        currencyTextField   = new FormattedTextField(Type.CURRENCY, 2, Locale.GERMANY);
-        percentageTextField = new FormattedTextField(Type.PERCENTAGE, BigDecimal.valueOf(20), 1);
-        monthTextField      = new FormattedTextField(Type.MONTHS, "3");
-        yearTextField       = new FormattedTextField(Type.YEARS, 0);
-        noneTextField       = new FormattedTextField(Type.NONE, null);
+        currencyTextField   = new FormattedTextField(new Format(StandardType.EURO), 2, Locale.GERMANY);
+        percentageTextField = new FormattedTextField(new Format(StandardType.PROZENT), BigDecimal.valueOf(20), 1);
+        monthTextField      = new FormattedTextField(new Format(StandardType.MONATE), "3");
+        yearTextField       = new FormattedTextField(new Format(StandardType.JAHRE), 0);
+        kmTextField         = new FormattedTextField(new Format(StandardType.KM), 2);
+        noneTextField       = new FormattedTextField(new Format(StandardType.NONE), null);
+        testTextField       = new FormattedTextField(new Format(StandardType.EURO), 2, Locale.GERMANY);
     }
 
     @Override public void start(Stage stage) {
-        VBox fieldBox = new VBox(10, currencyTextField, percentageTextField, monthTextField, yearTextField, noneTextField);
+        VBox fieldBox = new VBox(10, currencyTextField, percentageTextField, monthTextField, yearTextField, kmTextField, noneTextField, testTextField);
 
         StackPane pane = new StackPane(fieldBox);
         pane.setPadding(new Insets(10));
@@ -61,6 +64,8 @@ public class Demo extends Application {
 
         percentageTextField.setDecimals(5);
         //yearTextField.setText("0");
+
+        testTextField.setValue(new BigDecimal("123.45"));
     }
 
     @Override public void stop() {
