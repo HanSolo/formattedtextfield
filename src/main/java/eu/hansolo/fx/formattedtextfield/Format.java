@@ -21,7 +21,7 @@ import java.text.DecimalFormatSymbols;
 import java.util.Locale;
 
 
-public class Format implements FieldType {
+public class Format {
     private StandardType  type;
     private String        pattern;
     private String        unit;
@@ -56,43 +56,44 @@ public class Format implements FieldType {
         this.decimalFormat    = new DecimalFormat(pattern, new DecimalFormatSymbols(locale));
     }
 
-    @Override public StandardType getType() {
+
+    public StandardType getType() {
         return type;
     }
 
-    @Override public String getPattern() {
+    public String getPattern() {
         return this.pattern;
     }
-    @Override public void setPattern(final String pattern) {
+    public void setPattern(final String pattern) {
         this.pattern = pattern;
         decimalFormat.applyPattern(pattern);
     }
 
-    @Override public String getUnit() {
+    public String getUnit() {
         return unit;
     }
 
-    @Override public String getUnits() {
+    public String getUnits() {
         return units;
     }
 
-    @Override public boolean hasMultipleUnits() {
+    public boolean hasMultipleUnits() {
         return hasMultipleUnits;
     }
 
-    @Override public String getPrompt() {
+    public String getPrompt() {
         return prompt;
     }
 
-    @Override public DecimalFormat getDecimalFormat() {
+    public DecimalFormat getDecimalFormat() {
         return decimalFormat;
     }
 
-    @Override public void setLocale(final Locale locale) {
+    public void setLocale(final Locale locale) {
         decimalFormat.setDecimalFormatSymbols(new DecimalFormatSymbols(locale));
     }
 
-    @Override public DecimalFormat getDecimalFormatForLocale(final Locale locale) {
+    public DecimalFormat getDecimalFormatForLocale(final Locale locale) {
         setLocale(locale);
         return decimalFormat;
     }
