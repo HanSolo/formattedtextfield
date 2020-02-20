@@ -45,7 +45,7 @@ public class Demo extends Application {
         yearTextField       = new FormattedTextField(new Format(StandardType.JAHRE), 0);
         kmTextField         = new FormattedTextField(new Format(StandardType.KM), 2);
         noneTextField       = new FormattedTextField(new Format(StandardType.NONE), null);
-        testTextField       = new FormattedTextField(new Format(StandardType.EURO), 2, Locale.GERMANY);
+        testTextField       = new FormattedTextField(new Format(StandardType.EURO), 2, Locale.US);
     }
 
     @Override public void start(Stage stage) {
@@ -64,6 +64,7 @@ public class Demo extends Application {
 
         percentageTextField.setDecimals(5);
         //yearTextField.setText("0");
+        yearTextField.setDecimals(3);
 
         testTextField.setValue(new BigDecimal("123.45"));
     }

@@ -124,17 +124,16 @@ public class FormattedTextField extends TextField {
             }
         }
 
-        //this.pattern       = Pattern.compile("\\d*|\\d+\\,\\d{0," + decimals + "}");
         if (this.decimals > 0) {
-            patternBuilder = new StringBuilder().append("\\d*|\\d+").append(decimalFormatSymbols.getDecimalSeparator()).append("\\d{0,").append(this.decimals).append("}");
+            patternBuilder = new StringBuilder().append("\\d*|\\d+\\").append(decimalFormatSymbols.getDecimalSeparator()).append("\\d{0,").append(this.decimals).append("}");
             this.pattern = Pattern.compile(patternBuilder.toString());
         } else {
             patternBuilder = new StringBuilder().append("\\d*|\\d+\\d{0,").append(this.decimals).append("}");
             this.pattern = Pattern.compile(patternBuilder.toString());
         }
-        this.filter        = c -> {
+        this.filter = c -> {
             String text = c.getControlNewText();
-            if (pattern.matcher(text).matches()) {
+            if (this.pattern.matcher(text).matches()) {
                 return c;
             } else {
                 return null;
@@ -152,9 +151,9 @@ public class FormattedTextField extends TextField {
         focusedProperty().addListener((o, ov, nv) -> {
             if (nv) {
                 if (null != value.get()) {
-                    if (decimalFormatSymbols.getDecimalSeparator() != '.') {
+                    //if (decimalFormatSymbols.getDecimalSeparator() != '.') {
                         setText(value.get().toString().replace(".", Character.toString(decimalFormatSymbols.getDecimalSeparator())));
-                    }
+                    //}
                 }
                 setTextFormatter(textFormatter);
             } else {
@@ -252,7 +251,7 @@ public class FormattedTextField extends TextField {
             patternBuilder = new StringBuilder().append("\\d*|\\d+").append(decimalFormatSymbols.getDecimalSeparator()).append("\\d{0,").append(this.decimals).append("}");
             this.pattern = Pattern.compile(patternBuilder.toString());
         } else {
-            patternBuilder = new StringBuilder().append("\\d*|\\d+\\d{0,").append(this.decimals).append("}");
+            patternBuilder = new StringBuilder().append("\\d*|\\d+");
             this.pattern = Pattern.compile(patternBuilder.toString());
         }
 
