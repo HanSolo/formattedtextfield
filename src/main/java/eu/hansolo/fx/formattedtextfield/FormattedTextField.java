@@ -148,15 +148,6 @@ public class FormattedTextField extends TextField {
         }
 
         buildPattern();
-        this.filter  = c -> {
-            String text = c.getControlNewText();
-            if (this.pattern.matcher(text).matches()) {
-                return c;
-            } else {
-                return null;
-            }
-        };
-        this.textFormatter = new TextFormatter(filter);
         this.setPromptText(format.getPrompt());
         registerListeners();
         if (null != value) { setValue(value); }
@@ -205,7 +196,16 @@ public class FormattedTextField extends TextField {
         } else {
             patternBuilder = new StringBuilder().append("(?=.*\\d)(?!(?:\\D*\\d){").append(digits).append(",})[+-]?\\d{0,").append(this.preDecimals).append("}");
         }
-        this.pattern = Pattern.compile(patternBuilder.toString());
+        this.pattern       = Pattern.compile(patternBuilder.toString());
+        this.filter        = c -> {
+            String text = c.getControlNewText();
+            if (pattern.matcher(text).matches()) {
+                return c;
+            } else {
+                return null;
+            }
+        };
+        this.textFormatter = new TextFormatter(filter);
     }
 
 
@@ -264,15 +264,6 @@ public class FormattedTextField extends TextField {
     public void setPreDecimals(final int preDecimals) {
         this.preDecimals = clamp(1, 24, preDecimals);
         buildPattern();
-        this.filter        = c -> {
-            String text = c.getControlNewText();
-            if (pattern.matcher(text).matches()) {
-                return c;
-            } else {
-                return null;
-            }
-        };
-        this.textFormatter = new TextFormatter(filter);
         parseAndFormat();
     }
 
@@ -290,15 +281,6 @@ public class FormattedTextField extends TextField {
         this.numberFormat = format.getDecimalFormatForLocale(this.locale);
 
         buildPattern();
-        this.filter        = c -> {
-            String text = c.getControlNewText();
-            if (pattern.matcher(text).matches()) {
-                return c;
-            } else {
-                return null;
-            }
-        };
-        this.textFormatter = new TextFormatter(filter);
         parseAndFormat();
     }
 
