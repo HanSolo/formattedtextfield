@@ -151,9 +151,7 @@ public class FormattedTextField extends TextField {
         focusedProperty().addListener((o, ov, nv) -> {
             if (nv) {
                 if (null != value.get()) {
-                    //if (decimalFormatSymbols.getDecimalSeparator() != '.') {
-                        setText(value.get().toString().replace(".", Character.toString(decimalFormatSymbols.getDecimalSeparator())));
-                    //}
+                    setText(value.get().toString().replace(".", Character.toString(decimalFormatSymbols.getDecimalSeparator())));
                 }
                 setTextFormatter(textFormatter);
             } else {
