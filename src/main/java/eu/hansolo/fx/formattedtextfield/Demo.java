@@ -24,6 +24,7 @@ import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
 
 import java.math.BigDecimal;
+import java.text.DecimalFormat;
 import java.text.ParseException;
 import java.util.Locale;
 
@@ -45,7 +46,7 @@ public class Demo extends Application {
         yearTextField       = new FormattedTextField(new Format(StandardType.JAHRE), 0);
         kmTextField         = new FormattedTextField(new Format(StandardType.KM), 2);
         noneTextField       = new FormattedTextField(new Format(StandardType.NONE), null);
-        testTextField       = new FormattedTextField(new Format(StandardType.EURO), 2, Locale.US);
+        testTextField       = new FormattedTextField(new Format(StandardType.EURO), 5, 2, Locale.US);
     }
 
     @Override public void start(Stage stage) {

@@ -66,6 +66,11 @@ public class FormattedTextFieldBuilder<B extends FormattedTextFieldBuilder<B>> {
         return (B)this;
     }
 
+    public final B preDecimals(final int preDecimals) {
+        properties.put("preDecimals", new SimpleIntegerProperty(preDecimals));
+        return (B)this;
+    }
+
     public final B decimals(final int decimals) {
         properties.put("decimals", new SimpleIntegerProperty(decimals));
         return (B)this;
@@ -87,6 +92,8 @@ public class FormattedTextFieldBuilder<B extends FormattedTextFieldBuilder<B>> {
         for (String key : properties.keySet()) {
             if("value".equals(key)) {
                 formattedTextField.setValue(((ObjectProperty<BigDecimal>) properties.get(key)).get());
+            } else if ("preDecimals".equals(key)) {
+                formattedTextField.setPreDecimals(((IntegerProperty) properties.get(key)).get());
             } else if("decimals".equals(key)) {
                 formattedTextField.setDecimals(((IntegerProperty) properties.get(key)).get());
             } else if("locale".equals(key)) {
