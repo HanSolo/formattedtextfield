@@ -16,9 +16,11 @@
 
 package eu.hansolo.fx.formattedtextfield;
 
+import javafx.beans.property.BooleanProperty;
 import javafx.beans.property.IntegerProperty;
 import javafx.beans.property.ObjectProperty;
 import javafx.beans.property.Property;
+import javafx.beans.property.SimpleBooleanProperty;
 import javafx.beans.property.SimpleIntegerProperty;
 import javafx.beans.property.SimpleObjectProperty;
 import javafx.beans.property.SimpleStringProperty;
@@ -40,7 +42,7 @@ public class FormattedTextFieldBuilder<B extends FormattedTextFieldBuilder<B>> {
     }
 
 
-    // ******************** Methods *******************************************
+    // ******************** Public Methods ************************************
     public static final FormattedTextFieldBuilder create(final StandardType type) {
         return new FormattedTextFieldBuilder(type);
     }
@@ -86,6 +88,11 @@ public class FormattedTextFieldBuilder<B extends FormattedTextFieldBuilder<B>> {
         return (B)this;
     }
 
+    public final B negativeNumbersAllowed(final boolean allowed) {
+        properties.put("negativeNumbersAllowed", new SimpleBooleanProperty(allowed));
+        return (B)this;
+    }
+
 
     public final FormattedTextField build() {
         final FormattedTextField formattedTextField = new FormattedTextField(new Format(type), 0);
@@ -100,6 +107,8 @@ public class FormattedTextFieldBuilder<B extends FormattedTextFieldBuilder<B>> {
                 formattedTextField.setLocale(((ObjectProperty<Locale>) properties.get(key)).get());
             } else if ("promptText".equals(key)) {
                 formattedTextField.setPromptText(((StringProperty) properties.get(key)).get());
+            } else if ("negativeNumbersAllowed".equals(key)) {
+                formattedTextField.setNegativeNumbersAllowed(((BooleanProperty) properties.get(key)).get());
             }
         }
         return formattedTextField;

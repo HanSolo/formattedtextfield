@@ -31,6 +31,7 @@ public class Format {
     private DecimalFormat decimalFormat;
 
 
+    // ******************** Constructors **************************************
     public Format() {
         this(StandardType.NONE, "0", "", "", "", Locale.getDefault());
     }
@@ -57,6 +58,7 @@ public class Format {
     }
 
 
+    // ******************** Public Methods ************************************
     public StandardType getType() {
         return type;
     }

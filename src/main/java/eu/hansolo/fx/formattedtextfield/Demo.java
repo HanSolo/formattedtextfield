@@ -24,7 +24,6 @@ import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
 
 import java.math.BigDecimal;
-import java.text.DecimalFormat;
 import java.text.ParseException;
 import java.util.Locale;
 
@@ -41,12 +40,12 @@ public class Demo extends Application {
 
     @Override public void init() throws ParseException {
         currencyTextField   = new FormattedTextField(new Format(StandardType.EURO), 2, Locale.GERMANY);
-        percentageTextField = new FormattedTextField(new Format(StandardType.PROZENT), BigDecimal.valueOf(20), 1);
-        monthTextField      = new FormattedTextField(new Format(StandardType.MONATE), "3");
-        yearTextField       = new FormattedTextField(new Format(StandardType.JAHRE), 0);
+        percentageTextField = new FormattedTextField(new Format(StandardType.PERCENTAGE), BigDecimal.valueOf(20), 1);
+        monthTextField      = new FormattedTextField(new Format(StandardType.MONTHS), "3");
+        yearTextField       = new FormattedTextField(new Format(StandardType.YEARS), 0);
         kmTextField         = new FormattedTextField(new Format(StandardType.KM), 2);
         noneTextField       = new FormattedTextField(new Format(StandardType.NONE), null);
-        testTextField       = new FormattedTextField(new Format(StandardType.EURO), 5, 2, Locale.US);
+        testTextField       = new FormattedTextField(new Format(StandardType.EURO), 5, 2, Locale.US, false);
     }
 
     @Override public void start(Stage stage) {
