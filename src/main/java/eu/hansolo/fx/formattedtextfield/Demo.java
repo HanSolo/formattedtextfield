@@ -45,7 +45,7 @@ public class Demo extends Application {
         yearTextField       = new FormattedTextField(new Format(StandardType.YEARS), 0);
         kmTextField         = new FormattedTextField(new Format(StandardType.KM), 2);
         noneTextField       = new FormattedTextField(new Format(StandardType.NONE), null);
-        testTextField       = new FormattedTextField(new Format(StandardType.EURO), 5, 2, Locale.US, false);
+        testTextField       = new FormattedTextField(new Format(StandardType.EURO), 5, 2, Locale.US, true);
     }
 
     @Override public void start(Stage stage) {
