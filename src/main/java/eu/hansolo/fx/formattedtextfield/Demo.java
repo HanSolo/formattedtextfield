@@ -36,6 +36,7 @@ public class Demo extends Application {
     private FormattedTextField kmTextField;
     private FormattedTextField noneTextField;
     private FormattedTextField testTextField;
+    private FormattedTextField gallonTextField;
 
 
     @Override public void init() throws ParseException {
@@ -45,11 +46,12 @@ public class Demo extends Application {
         yearTextField       = new FormattedTextField(new Format(StandardType.YEARS), 0);
         kmTextField         = new FormattedTextField(new Format(StandardType.KM), 2);
         noneTextField       = new FormattedTextField(new Format(StandardType.NONE), null);
-        testTextField       = new FormattedTextField(new Format(StandardType.EURO), 5, 2, Locale.US, true);
+        testTextField       = new FormattedTextField(new Format(StandardType.DOLLAR), 5, 2, Locale.US, true);
+        gallonTextField     = new FormattedTextField(new Format("0.0", "Gallon", "Gallons", "in Gallons", Locale.US), 3, 2, Locale.US, false);
     }
 
     @Override public void start(Stage stage) {
-        VBox fieldBox = new VBox(10, currencyTextField, percentageTextField, monthTextField, yearTextField, kmTextField, noneTextField, testTextField);
+        VBox fieldBox = new VBox(10, currencyTextField, percentageTextField, monthTextField, yearTextField, kmTextField, noneTextField, testTextField, gallonTextField);
 
         StackPane pane = new StackPane(fieldBox);
         pane.setPadding(new Insets(10));
