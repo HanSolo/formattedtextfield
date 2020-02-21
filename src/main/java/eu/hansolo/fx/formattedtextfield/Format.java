@@ -44,6 +44,9 @@ public class Format {
     public Format(final String pattern, final String unit, final String prompt) {
         this(StandardType.NONE, pattern, unit, unit, prompt, Locale.getDefault());
     }
+    public Format(final String pattern, final String unit, final String units, final String prompt) {
+        this(StandardType.NONE, pattern, unit, units, prompt, Locale.getDefault());
+    }
     public Format(final String pattern, final String unit, final String prompt, final Locale locale) {
         this(StandardType.NONE, pattern, unit, unit, prompt, locale);
     }
