@@ -46,7 +46,7 @@ public class FormattedTextField extends TextField {
     private              BooleanBinding             negativeBinding;
     private              boolean                    _negativeNumbersAllowed;
     private              BooleanProperty            negativeNumbersAllowed;
-    private              int                        preDecimals;
+    private              int                        predecimals;
     private              int                        decimals;
     private              NumberFormat               numberFormat;
     private              DecimalFormat              decimalFormat;
@@ -62,74 +62,74 @@ public class FormattedTextField extends TextField {
     public FormattedTextField(final Format format, final int decimals) {
         this(format, null, MAX_PRE_DECIMALS, decimals, Locale.getDefault(), false);
     }
-    public FormattedTextField(final Format format, final int preDecimals, final int decimals) {
-        this(format, null, preDecimals, decimals, Locale.getDefault(), false);
+    public FormattedTextField(final Format format, final int predecimals, final int decimals) {
+        this(format, null, predecimals, decimals, Locale.getDefault(), false);
     }
     public FormattedTextField(final Format format, final int decimals, final Locale locale) {
         this(format, null, MAX_PRE_DECIMALS, decimals, locale, false);
     }
-    public FormattedTextField(final Format format, final int preDecimals, final int decimals, final Locale locale) {
-        this(format, null, preDecimals, decimals, locale, false);
+    public FormattedTextField(final Format format, final int predecimals, final int decimals, final Locale locale) {
+        this(format, null, predecimals, decimals, locale, false);
     }
     public FormattedTextField(final Format format, final int decimals, final boolean negativeNumbersAllowed) {
         this(format, null, MAX_PRE_DECIMALS, decimals, Locale.getDefault(), negativeNumbersAllowed);
     }
-    public FormattedTextField(final Format format, final int preDecimals, final int decimals, final boolean negativeNumbersAllowed) {
-        this(format, null, preDecimals, decimals, Locale.getDefault(), negativeNumbersAllowed);
+    public FormattedTextField(final Format format, final int predecimals, final int decimals, final boolean negativeNumbersAllowed) {
+        this(format, null, predecimals, decimals, Locale.getDefault(), negativeNumbersAllowed);
     }
     public FormattedTextField(final Format format, final int decimals, final Locale locale, final boolean negativeNumbersAllowed) {
         this(format, null, MAX_PRE_DECIMALS, decimals, locale, negativeNumbersAllowed);
     }
-    public FormattedTextField(final Format format, final int preDecimals, final int decimals, final Locale locale, final boolean negativeNumbersAllowed) {
-        this(format, null, preDecimals, decimals, locale, negativeNumbersAllowed);
+    public FormattedTextField(final Format format, final int predecimals, final int decimals, final Locale locale, final boolean negativeNumbersAllowed) {
+        this(format, null, predecimals, decimals, locale, negativeNumbersAllowed);
     }
     public FormattedTextField(final Format format, final float value, final int decimals) {
         this(format, BigDecimal.valueOf(value), MAX_PRE_DECIMALS, decimals, Locale.getDefault(), false);
     }
-    public FormattedTextField(final Format format, final float value, final int preDecimals, final int decimals) {
-        this(format, BigDecimal.valueOf(value), preDecimals, decimals, Locale.getDefault(), false);
+    public FormattedTextField(final Format format, final float value, final int predecimals, final int decimals) {
+        this(format, BigDecimal.valueOf(value), predecimals, decimals, Locale.getDefault(), false);
     }
     public FormattedTextField(final Format format, final float value, final int decimals, final Locale locale) {
         this(format, BigDecimal.valueOf(value), MAX_PRE_DECIMALS, decimals, locale, false);
     }
-    public FormattedTextField(final Format format, final float value, final int preDecimals, final int decimals, final Locale locale) {
-        this(format, BigDecimal.valueOf(value), preDecimals, decimals, locale, false);
+    public FormattedTextField(final Format format, final float value, final int predecimals, final int decimals, final Locale locale) {
+        this(format, BigDecimal.valueOf(value), predecimals, decimals, locale, false);
     }
     public FormattedTextField(final Format format, final float value, final int decimals, final boolean negativeNumbersAllowed) {
         this(format, BigDecimal.valueOf(value), MAX_PRE_DECIMALS, decimals, Locale.getDefault(), negativeNumbersAllowed);
     }
-    public FormattedTextField(final Format format, final float value, final int preDecimals, final int decimals, final boolean negativeNumbersAllowed) {
-        this(format, BigDecimal.valueOf(value), preDecimals, decimals, Locale.getDefault(), negativeNumbersAllowed);
+    public FormattedTextField(final Format format, final float value, final int predecimals, final int decimals, final boolean negativeNumbersAllowed) {
+        this(format, BigDecimal.valueOf(value), predecimals, decimals, Locale.getDefault(), negativeNumbersAllowed);
     }
     public FormattedTextField(final Format format, final float value, final int decimals, final Locale locale, final boolean negativeNumbersAllowed) {
         this(format, BigDecimal.valueOf(value), MAX_PRE_DECIMALS, decimals, locale, negativeNumbersAllowed);
     }
-    public FormattedTextField(final Format format, final float value, final int preDecimals, final int decimals, final Locale locale, final boolean negativeNumbersAllowed) {
-        this(format, BigDecimal.valueOf(value), preDecimals, decimals, locale, negativeNumbersAllowed);
+    public FormattedTextField(final Format format, final float value, final int predecimals, final int decimals, final Locale locale, final boolean negativeNumbersAllowed) {
+        this(format, BigDecimal.valueOf(value), predecimals, decimals, locale, negativeNumbersAllowed);
     }
     public FormattedTextField(final Format format, final double value, final int decimals) {
         this(format, BigDecimal.valueOf(value), MAX_PRE_DECIMALS, decimals, Locale.getDefault(), false);
     }
-    public FormattedTextField(final Format format, final double value, final int preDecimals, final int decimals) {
-        this(format, BigDecimal.valueOf(value), preDecimals, decimals, Locale.getDefault(), false);
+    public FormattedTextField(final Format format, final double value, final int predecimals, final int decimals) {
+        this(format, BigDecimal.valueOf(value), predecimals, decimals, Locale.getDefault(), false);
     }
     public FormattedTextField(final Format format, final double value, final int decimals, final Locale locale) {
         this(format, BigDecimal.valueOf(value), MAX_PRE_DECIMALS, decimals, locale, false);
     }
-    public FormattedTextField(final Format format, final double value, final int preDecimals, final int decimals, final Locale locale) {
-        this(format, BigDecimal.valueOf(value), preDecimals, decimals, locale, false);
+    public FormattedTextField(final Format format, final double value, final int predecimals, final int decimals, final Locale locale) {
+        this(format, BigDecimal.valueOf(value), predecimals, decimals, locale, false);
     }
     public FormattedTextField(final Format format, final double value, final int decimals, final boolean negativeNumbersAllowed) {
         this(format, BigDecimal.valueOf(value), MAX_PRE_DECIMALS, decimals, Locale.getDefault(), negativeNumbersAllowed);
     }
-    public FormattedTextField(final Format format, final double value, final int preDecimals, final int decimals, final boolean negativeNumbersAllowed) {
-        this(format, BigDecimal.valueOf(value), preDecimals, decimals, Locale.getDefault(), negativeNumbersAllowed);
+    public FormattedTextField(final Format format, final double value, final int predecimals, final int decimals, final boolean negativeNumbersAllowed) {
+        this(format, BigDecimal.valueOf(value), predecimals, decimals, Locale.getDefault(), negativeNumbersAllowed);
     }
     public FormattedTextField(final Format format, final double value, final int decimals, final Locale locale, final boolean negativeNumbersAllowed) {
         this(format, BigDecimal.valueOf(value), MAX_PRE_DECIMALS, decimals, locale, negativeNumbersAllowed);
     }
-    public FormattedTextField(final Format format, final double value, final int preDecimals, final int decimals, final Locale locale, final boolean negativeNumbersAllowed) {
-        this(format, BigDecimal.valueOf(value), preDecimals, decimals, locale, negativeNumbersAllowed);
+    public FormattedTextField(final Format format, final double value, final int predecimals, final int decimals, final Locale locale, final boolean negativeNumbersAllowed) {
+        this(format, BigDecimal.valueOf(value), predecimals, decimals, locale, negativeNumbersAllowed);
     }
     public FormattedTextField(final Format format, final long value) {
         this(format, BigDecimal.valueOf(value), MAX_PRE_DECIMALS, 0, Locale.getDefault(), false);
@@ -140,8 +140,8 @@ public class FormattedTextField extends TextField {
     public FormattedTextField(final Format format, final long value, final int decimals, final Locale locale) {
         this(format, BigDecimal.valueOf(value), MAX_PRE_DECIMALS, decimals, locale, false);
     }
-    public FormattedTextField(final Format format, final long value, final int preDecimals, final int decimals, final Locale locale) {
-        this(format, BigDecimal.valueOf(value), preDecimals, decimals, locale, false);
+    public FormattedTextField(final Format format, final long value, final int predecimals, final int decimals, final Locale locale) {
+        this(format, BigDecimal.valueOf(value), predecimals, decimals, locale, false);
     }
     public FormattedTextField(final Format format, final long value, final boolean negativeNumbersAllowed) {
         this(format, BigDecimal.valueOf(value), MAX_PRE_DECIMALS, 0, Locale.getDefault(), negativeNumbersAllowed);
@@ -152,8 +152,8 @@ public class FormattedTextField extends TextField {
     public FormattedTextField(final Format format, final long value, final int decimals, final Locale locale, final boolean negativeNumbersAllowed) {
         this(format, BigDecimal.valueOf(value), MAX_PRE_DECIMALS, decimals, locale, negativeNumbersAllowed);
     }
-    public FormattedTextField(final Format format, final long value, final int preDecimals, final int decimals, final Locale locale, final boolean negativeNumbersAllowed) {
-        this(format, BigDecimal.valueOf(value), preDecimals, decimals, locale, negativeNumbersAllowed);
+    public FormattedTextField(final Format format, final long value, final int predecimals, final int decimals, final Locale locale, final boolean negativeNumbersAllowed) {
+        this(format, BigDecimal.valueOf(value), predecimals, decimals, locale, negativeNumbersAllowed);
     }
     public FormattedTextField(final Format format, final String value) {
         this(format, (null == value || value.isEmpty()) ? null : new BigDecimal(value), MAX_PRE_DECIMALS, 0, Locale.getDefault(), false);
@@ -170,16 +170,16 @@ public class FormattedTextField extends TextField {
     public FormattedTextField(final Format format, final BigDecimal value, final int decimals) {
         this(format, value, MAX_PRE_DECIMALS, decimals, Locale.getDefault(), false);
     }
-    public FormattedTextField(final Format format, final BigDecimal value, final int preDecimals, final int decimals) {
-        this(format, value, preDecimals, decimals, Locale.getDefault(), false);
+    public FormattedTextField(final Format format, final BigDecimal value, final int predecimals, final int decimals) {
+        this(format, value, predecimals, decimals, Locale.getDefault(), false);
     }
     public FormattedTextField(final Format format, final BigDecimal value, final int decimals, final boolean negativeNumbersAllowed) {
         this(format, value, MAX_PRE_DECIMALS, decimals, Locale.getDefault(), negativeNumbersAllowed);
     }
-    public FormattedTextField(final Format format, final BigDecimal value, final int preDecimals, final int decimals, final boolean negativeNumbersAllowed) {
-        this(format, value, preDecimals, decimals, Locale.getDefault(), negativeNumbersAllowed);
+    public FormattedTextField(final Format format, final BigDecimal value, final int predecimals, final int decimals, final boolean negativeNumbersAllowed) {
+        this(format, value, predecimals, decimals, Locale.getDefault(), negativeNumbersAllowed);
     }
-    public FormattedTextField(final Format format, final BigDecimal value, final int preDecimals, final int decimals, final Locale locale, final boolean negativeNumbersAllowed) {
+    public FormattedTextField(final Format format, final BigDecimal value, final int predecimals, final int decimals, final Locale locale, final boolean negativeNumbersAllowed) {
         super(null == value ? null : ( value.compareTo(BigDecimal.ZERO) < 0 ? BigDecimal.ZERO.toString() :
                                                                             DecimalFormatSymbols.getInstance(locale).getDecimalSeparator() != '.' ? value.toString().replace(".", Character.toString(DecimalFormatSymbols.getInstance(locale).getDecimalSeparator())) :
                                                                             value.toString()));
@@ -191,7 +191,7 @@ public class FormattedTextField extends TextField {
             @Override public String getName() { return "negative"; }
         };
         this._negativeNumbersAllowed = negativeNumbersAllowed;
-        this.preDecimals             = clamp(1, MAX_PRE_DECIMALS, preDecimals);
+        this.predecimals             = clamp(1, MAX_PRE_DECIMALS, predecimals);
         this.decimals                = clamp(0, Integer.MAX_VALUE, decimals);
         this.decimalFormat           = new DecimalFormat();
         this.decimalFormat.setDecimalFormatSymbols(decimalFormatSymbols);
@@ -292,19 +292,19 @@ public class FormattedTextField extends TextField {
     }
 
     private void buildPattern() {
-        int digits = this.preDecimals + this.decimals + 1;
+        int digits = this.predecimals + this.decimals + 1;
         StringBuilder patternBuilder;
         if (getNegativeNumbersAllowed()) {
             if (this.decimals > 0) {
-                patternBuilder = new StringBuilder().append("(?=.*\\d?)(?!(?:\\D*\\d){").append(digits).append(",})[-]?\\d{0,").append(this.preDecimals).append("}(?:\\").append(decimalFormatSymbols.getDecimalSeparator()).append("\\d{0,").append(this.decimals).append("})?");
+                patternBuilder = new StringBuilder().append("(?=.*\\d?)(?!(?:\\D*\\d){").append(digits).append(",})[-]?\\d{0,").append(this.predecimals).append("}(?:\\").append(decimalFormatSymbols.getDecimalSeparator()).append("\\d{0,").append(this.decimals).append("})?");
             } else {
-                patternBuilder = new StringBuilder().append("(?=.*\\d?)(?!(?:\\D*\\d){").append(digits).append(",})[-]?\\d{0,").append(this.preDecimals).append("}");
+                patternBuilder = new StringBuilder().append("(?=.*\\d?)(?!(?:\\D*\\d){").append(digits).append(",})[-]?\\d{0,").append(this.predecimals).append("}");
             }
         } else {
             if (this.decimals > 0) {
-                patternBuilder = new StringBuilder().append("(?=.*\\d?)(?!(?:\\D*\\d){").append(digits).append(",})\\d{0,").append(this.preDecimals).append("}(?:\\").append(decimalFormatSymbols.getDecimalSeparator()).append("\\d{0,").append(this.decimals).append("})?");
+                patternBuilder = new StringBuilder().append("(?=.*\\d?)(?!(?:\\D*\\d){").append(digits).append(",})\\d{0,").append(this.predecimals).append("}(?:\\").append(decimalFormatSymbols.getDecimalSeparator()).append("\\d{0,").append(this.decimals).append("})?");
             } else {
-                patternBuilder = new StringBuilder().append("(?=.*\\d?)(?!(?:\\D*\\d){").append(digits).append(",})\\d{0,").append(this.preDecimals).append("}");
+                patternBuilder = new StringBuilder().append("(?=.*\\d?)(?!(?:\\D*\\d){").append(digits).append(",})\\d{0,").append(this.predecimals).append("}");
             }
         }
         this.pattern       = Pattern.compile(patternBuilder.toString());
@@ -371,18 +371,21 @@ public class FormattedTextField extends TextField {
         return this.value;
     }
 
-    public int getPreDecimals() { return preDecimals; }
-    public void setPreDecimals(final int preDecimals) {
-        this.preDecimals = clamp(1, MAX_PRE_DECIMALS, preDecimals);
-        buildPattern();
-        parseAndFormat();
+    public int getPreDecimals() { return predecimals; }
+    public void setPreDecimals(final int predecimals) {
+        setDecimals(predecimals, getDecimals());
     }
 
     public int getDecimals() {
         return decimals;
     }
     public void setDecimals(final int decimals) {
-        this.decimals = clamp(0, Integer.MAX_VALUE, decimals);
+        setDecimals(getPreDecimals(), decimals);
+    }
+
+    public void setDecimals(final int predecimals, final int decimals) {
+        this.predecimals = clamp(1, MAX_PRE_DECIMALS, predecimals);
+        this.decimals    = clamp(0, Integer.MAX_VALUE, decimals);
         StringBuilder patternBuilder = new StringBuilder(StandardType.KM == format.getType() ? "#,###,##0" : "0");
         if (decimals > 0) {
             patternBuilder.append(".");
@@ -393,11 +396,6 @@ public class FormattedTextField extends TextField {
 
         buildPattern();
         parseAndFormat();
-    }
-
-    public void setDecimals(final int preDecimals, final int decimals) {
-        setPreDecimals(preDecimals);
-        setDecimals(decimals);
     }
 
     public Locale getLocale() {
