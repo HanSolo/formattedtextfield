@@ -17,6 +17,7 @@
 package eu.hansolo.fx.formattedtextfield;
 
 import java.math.BigDecimal;
+import java.math.BigInteger;
 import java.text.DecimalFormat;
 import java.text.DecimalFormatSymbols;
 import java.text.NumberFormat;
@@ -56,6 +57,7 @@ public class FormattedTextField extends TextField {
     private              TextFormatter              textFormatter;
     private              Pattern                    pattern;
     private              UnaryOperator<Change>      filter;
+    private              ObjectProperty<UnitPos>    unitPosition;
 
 
     // ******************** Constructors **************************************
@@ -167,6 +169,19 @@ public class FormattedTextField extends TextField {
     public FormattedTextField(final Format format, final String value, final Locale locale, final boolean negativeNumbersAllowed) {
         this(format, (null == value || value.isEmpty()) ? null : new BigDecimal(value), MAX_PRE_DECIMALS, 0, locale, negativeNumbersAllowed);
     }
+    public FormattedTextField(final Format format, final BigInteger value, final int decimals) {
+        this(format, new BigDecimal(value), MAX_PRE_DECIMALS, decimals, Locale.getDefault(), false);
+    }
+    public FormattedTextField(final Format format, final BigInteger value, final int predecimals, final int decimals) {
+        this(format, new BigDecimal(value), predecimals, decimals, Locale.getDefault(), false);
+    }
+    public FormattedTextField(final Format format, final BigInteger value, final int decimals, final boolean negativeNumbersAllowed) {
+        this(format, new BigDecimal(value), MAX_PRE_DECIMALS, decimals, Locale.getDefault(), negativeNumbersAllowed);
+    }
+    public FormattedTextField(final Format format, final BigInteger value, final int predecimals, final int decimals, final boolean negativeNumbersAllowed) {
+        this(format, new BigDecimal(value), predecimals, decimals, Locale.getDefault(), negativeNumbersAllowed);
+    }
+
     public FormattedTextField(final Format format, final BigDecimal value, final int decimals) {
         this(format, value, MAX_PRE_DECIMALS, decimals, Locale.getDefault(), false);
     }
@@ -195,6 +210,11 @@ public class FormattedTextField extends TextField {
         this.decimals                = clamp(0, Integer.MAX_VALUE, decimals);
         this.decimalFormat           = new DecimalFormat();
         this.decimalFormat.setDecimalFormatSymbols(decimalFormatSymbols);
+        this.unitPosition            = new ObjectPropertyBase<>(UnitPos.AFTER) {
+            @Override protected void invalidated() { parseAndFormat(); }
+            @Override public Object getBean() { return FormattedTextField.this; }
+            @Override public String getName() { return "unitPosition"; }
+        };
 
         StringBuilder patternBuilder = new StringBuilder(StandardType.KM == format.getType() ? "#,###,##0" : "0");
 
@@ -225,12 +245,32 @@ public class FormattedTextField extends TextField {
         };
 
         if (null == value) {
-            this.decimalFormat.applyPattern(this.format.getPattern() + (this.format.getUnit().isEmpty() ? "" : ("'" + this.format.getUnit() + "'")));
+            switch(getUnitPosition()) {
+                case IN_FRONT:
+                    this.decimalFormat.applyPattern((this.format.getUnit().isEmpty() ? "" : ("'" + this.format.getUnit() + "' ")) + this.format.getPattern());
+                    break;
+                case AFTER:
+                default:
+                    this.decimalFormat.applyPattern(this.format.getPattern() + (this.format.getUnit().isEmpty() ? "" : ("' " + this.format.getUnit() + "'")));
+                    break;
+            }
         } else {
-            if (format.hasMultipleUnits() && (value.compareTo(BigDecimal.ONE) > 0 || value.compareTo(BigDecimal.ONE.negate()) < 0)) {
-                this.decimalFormat.applyPattern(this.format.getPattern() + (this.format.getUnits().isEmpty() ? "" : ("' " + this.format.getUnits() + "'")));
-            } else {
-                this.decimalFormat.applyPattern(this.format.getPattern() + (this.format.getUnit().isEmpty() ? "" : ("' " + this.format.getUnit() + "'")));
+            switch(getUnitPosition()) {
+                case IN_FRONT:
+                    if (format.hasMultipleUnits() && (value.compareTo(BigDecimal.ONE) > 0 || value.compareTo(BigDecimal.ONE.negate()) < 0)) {
+                        this.decimalFormat.applyPattern((this.format.getUnits().isEmpty() ? "" : ("'" + this.format.getUnits() + "' ")) + this.format.getPattern());
+                    } else {
+                        this.decimalFormat.applyPattern((this.format.getUnit().isEmpty() ? "" : ("'" + this.format.getUnit() + "' ")) + this.format.getPattern());
+                    }
+                    break;
+                case AFTER:
+                default:
+                    if (format.hasMultipleUnits() && (value.compareTo(BigDecimal.ONE) > 0 || value.compareTo(BigDecimal.ONE.negate()) < 0)) {
+                        this.decimalFormat.applyPattern(this.format.getPattern() + (this.format.getUnits().isEmpty() ? "" : ("' " + this.format.getUnits() + "'")));
+                    } else {
+                        this.decimalFormat.applyPattern(this.format.getPattern() + (this.format.getUnit().isEmpty() ? "" : ("' " + this.format.getUnit() + "'")));
+                    }
+                    break;
             }
         }
 
@@ -332,10 +372,22 @@ public class FormattedTextField extends TextField {
 
             this.decimalFormat.setDecimalFormatSymbols(decimalFormatSymbols);
 
-            if (format.hasMultipleUnits() && (newValue.compareTo(BigDecimal.ONE) > 0 || newValue.compareTo(BigDecimal.ONE.negate()) < 0)) {
-                this.decimalFormat.applyPattern(this.format.getPattern() + (this.format.getUnits().isEmpty() ? "" : ("' " + this.format.getUnits() + "'")));
-            } else {
-                this.decimalFormat.applyPattern(this.format.getPattern() + (this.format.getUnit().isEmpty() ? "" : ("' " + this.format.getUnit() + "'")));
+            switch(getUnitPosition()) {
+                case IN_FRONT:
+                    if (format.hasMultipleUnits() && (newValue.compareTo(BigDecimal.ONE) > 0 || newValue.compareTo(BigDecimal.ONE.negate()) < 0)) {
+                        this.decimalFormat.applyPattern((this.format.getUnits().isEmpty() ? "" : ("'" + this.format.getUnits() + "' ")) + this.format.getPattern());
+                    } else {
+                        this.decimalFormat.applyPattern((this.format.getUnit().isEmpty() ? "" : ("'" + this.format.getUnit() + "' ")) + this.format.getPattern());
+                    }
+                    break;
+                case AFTER:
+                default:
+                    if (format.hasMultipleUnits() && (newValue.compareTo(BigDecimal.ONE) > 0 || newValue.compareTo(BigDecimal.ONE.negate()) < 0)) {
+                        this.decimalFormat.applyPattern(this.format.getPattern() + (this.format.getUnits().isEmpty() ? "" : ("' " + this.format.getUnits() + "'")));
+                    } else {
+                        this.decimalFormat.applyPattern(this.format.getPattern() + (this.format.getUnit().isEmpty() ? "" : ("' " + this.format.getUnit() + "'")));
+                    }
+                    break;
             }
 
             setValue(newValue);
@@ -429,6 +481,10 @@ public class FormattedTextField extends TextField {
         }
         return negativeNumbersAllowed;
     }
+
+    public UnitPos getUnitPosition() { return unitPosition.get(); }
+    public void setUnitPosition(final UnitPos unitPosition) { this.unitPosition.set(unitPosition); }
+    public ObjectProperty<UnitPos> unitPositionProperty() { return unitPosition; }
 
     public final boolean isNegative() { return negative.get(); }
     public final ReadOnlyBooleanProperty negativeProperty() { return negative; }

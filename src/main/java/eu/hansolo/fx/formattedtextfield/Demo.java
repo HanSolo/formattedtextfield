@@ -37,6 +37,7 @@ public class Demo extends Application {
     private FormattedTextField noneTextField;
     private FormattedTextField testTextField;
     private FormattedTextField gallonTextField;
+    private FormattedTextField apertureTextField;
 
 
     @Override public void init() throws ParseException {
@@ -48,10 +49,15 @@ public class Demo extends Application {
         noneTextField       = new FormattedTextField(new Format(StandardType.NONE), null);
         testTextField       = new FormattedTextField(new Format(StandardType.DOLLAR), 5, 2, Locale.US, true);
         gallonTextField     = new FormattedTextField(new Format("0.0", "Gallon", "Gallons", "in Gallons", Locale.US), 3, 2, Locale.US, false);
+        apertureTextField   = FormattedTextFieldBuilder.create(StandardType.F)
+                                                       .promptText("in f-stops")
+                                                       .decimals(1)
+                                                       .unitPosition(UnitPos.IN_FRONT)
+                                                       .build();
     }
 
     @Override public void start(Stage stage) {
-        VBox fieldBox = new VBox(10, currencyTextField, percentageTextField, monthTextField, yearTextField, kmTextField, noneTextField, testTextField, gallonTextField);
+        VBox fieldBox = new VBox(10, currencyTextField, percentageTextField, monthTextField, yearTextField, kmTextField, noneTextField, testTextField, gallonTextField, apertureTextField);
 
         StackPane pane = new StackPane(fieldBox);
         pane.setPadding(new Insets(10));

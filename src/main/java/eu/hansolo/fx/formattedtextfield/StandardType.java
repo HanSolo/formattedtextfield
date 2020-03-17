@@ -19,12 +19,14 @@ package eu.hansolo.fx.formattedtextfield;
 
 public enum StandardType {
     NONE("0", "", ""),
-    KM("#,###,##0.00", " KM", "in Kilometers"),
-    PERCENTAGE("0.0", " %", "in percentage"),
-    YEARS("0", " Year", " Years", "in years"),
-    MONTHS("0", " Month", " Months", "in months"),
-    EURO("0.00", " EUR", "in Euro"),
-    DOLLAR("0.00", " USD", "in Dollar");
+    KM("#,###,##0.00", "KM", "in Kilometers"),
+    PERCENTAGE("0.0", "%", "in percentage"),
+    YEARS("0", "Year", " Years", "in years"),
+    MONTHS("0", "Month", " Months", "in months"),
+    EURO("0.00", "EUR", "in Euro"),
+    DOLLAR("0.00", "USD", "in Dollar"),
+    MM("0", "mm", "in mm"),
+    F("0.0", "f", "in f-stops");
 
     private final String pattern;
     private final String unit;

@@ -93,6 +93,11 @@ public class FormattedTextFieldBuilder<B extends FormattedTextFieldBuilder<B>> {
         return (B)this;
     }
 
+    public final B unitPosition(final UnitPos unitPosition) {
+        properties.put("unitPosition", new SimpleObjectProperty(unitPosition));
+        return (B)this;
+    }
+
 
     public final FormattedTextField build() {
         final FormattedTextField formattedTextField = new FormattedTextField(new Format(type), 0);
@@ -109,6 +114,8 @@ public class FormattedTextFieldBuilder<B extends FormattedTextFieldBuilder<B>> {
                 formattedTextField.setPromptText(((StringProperty) properties.get(key)).get());
             } else if ("negativeNumbersAllowed".equals(key)) {
                 formattedTextField.setNegativeNumbersAllowed(((BooleanProperty) properties.get(key)).get());
+            } else if ("unitPosition".equals(key)) {
+                formattedTextField.setUnitPosition(((ObjectProperty<UnitPos>) properties.get(key)).get());
             }
         }
         return formattedTextField;
