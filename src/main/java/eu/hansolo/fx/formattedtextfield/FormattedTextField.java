@@ -216,7 +216,17 @@ public class FormattedTextField extends TextField {
             @Override public String getName() { return "unitPosition"; }
         };
 
-        StringBuilder patternBuilder = new StringBuilder(StandardType.KM == format.getType() ? "#,###,##0" : "0");
+        StringBuilder patternBuilder;
+        switch(format.getType()) {
+            case KM    :
+            case EURO  :
+            case DOLLAR:
+                patternBuilder = new StringBuilder("#,###,##0");
+                break;
+            default:
+                patternBuilder = new StringBuilder("0");
+                break;
+        }
 
         if (this.decimals > 0) {
             patternBuilder.append(".");
@@ -438,7 +448,17 @@ public class FormattedTextField extends TextField {
     public void setDecimals(final int predecimals, final int decimals) {
         this.predecimals = clamp(1, MAX_PRE_DECIMALS, predecimals);
         this.decimals    = clamp(0, Integer.MAX_VALUE, decimals);
-        StringBuilder patternBuilder = new StringBuilder(StandardType.KM == format.getType() ? "#,###,##0" : "0");
+        StringBuilder patternBuilder;
+        switch(format.getType()) {
+            case KM    :
+            case EURO  :
+            case DOLLAR:
+                patternBuilder = new StringBuilder("#,###,##0");
+                break;
+            default:
+                patternBuilder = new StringBuilder("0");
+                break;
+        }
         if (decimals > 0) {
             patternBuilder.append(".");
             for (int i = 0 ; i < decimals ; i++) { patternBuilder.append("0"); }
